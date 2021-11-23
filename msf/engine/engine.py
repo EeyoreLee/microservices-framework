@@ -11,9 +11,9 @@ from flask import Flask, request
 
 class Engine(object):
 
-    def __init__(self, graph: Graph, name=__name__) -> None:
+    def __init__(self, graph: Graph=None, name=__name__) -> None:
         super().__init__()
-        self.graph = graph
+        self.graph = graph if isinstance(graph, Graph) else Graph(graph)
         self.create_app(name)
 
     def flow_mixin(self, path):

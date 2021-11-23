@@ -18,25 +18,25 @@ class GraphConfig(object):
         :type config: dict
         """        
         super().__init__()
-        self.node_conf: dict = config['NODE_CONF']
-        self.path_conf: dict = config['PATH_CONF']
+        self.node_conf: dict = config.get('NODE_CONF', {}) if isinstance(config, dict) else {}
+        self.path_conf: dict = config.get('PATH_CONF', {}) if isinstance(config, dict) else {}
 
 
 class NodeConfig(object):
 
     def __init__(self, config:dict) -> None:
         super().__init__()
-        self.module = config['module']
-        self.args = config['args']
-        self.description = config['description']
+        self.module = config.get('module', None) if isinstance(config, dict) else None
+        self.args: dict = config.get('args', {}) if isinstance(config, dict) else {}
+        self.description = config.get('description', None) if isinstance(config, dict) else None
 
 
 class PathConfig(object):
 
     def __init__(self, config:dict) -> None:
         super().__init__()
-        self.flow = config['flow']
-        self.description = config['description']
+        self.flow = config.get('flow', None) if isinstance(config, dict) else None
+        self.description = config.get('description', None) if isinstance(config, dict) else None
 
 
 class Node(object):
@@ -45,7 +45,7 @@ class Node(object):
         super().__init__()
         self.config = config if isinstance(config, NodeConfig) else NodeConfig(config)
 
-    def forward(self, factor):
+    def forward(self, *args, **kwds):
         return 'response success'
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
