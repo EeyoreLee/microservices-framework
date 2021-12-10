@@ -17,7 +17,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/EeyoreLee/microservices-framework",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(include=['msf']),
     install_requires=['flask>=2.0.2'],
     classifiers=(
         "Programming Language :: Python :: 3",
