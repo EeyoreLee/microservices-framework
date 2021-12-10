@@ -10,7 +10,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setuptools.setup(
     name="msf",
-    version="0.1.0",
+    version="0.1.1",
     author="EeyoreLee",
     author_email="li.chunyu0412@outlook.com",
     description="python easy microservices framework",
