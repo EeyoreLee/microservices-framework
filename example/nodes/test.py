@@ -4,7 +4,7 @@
 @author: lichunyu
 '''
 
-from msf.core.core import node_register
+from msf import node_register
 
 
 

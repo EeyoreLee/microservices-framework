@@ -4,8 +4,7 @@
 @author: lichunyu
 '''
 
-from msf.engine.engine import Engine
-from msf.core.core import Graph, GraphConfig
+from msf import Engine, conf
 from example.workflow_conf import NODE_CONF, PATH_CONF
 from example.nodes import *
 
@@ -16,7 +15,5 @@ def main():
         'NODE_CONF': NODE_CONF,
         'PATH_CONF': PATH_CONF
     }
-    graph_config = GraphConfig(config=config)
-    graph = Graph(graph_config)
-    engine = Engine(graph)
+    engine = Engine(config)
     engine.run(host='0.0.0.0', port='41000')
