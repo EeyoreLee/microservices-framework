@@ -11,14 +11,15 @@ from flask import Flask, request
 
 class Engine(object):
 
-    def __init__(self, graph: Graph=None, name=__name__) -> None:
+    def __init__(self, graph: Graph=None, resource:dict=None, name=__name__) -> None:
         super().__init__()
         self.graph = graph if isinstance(graph, Graph) else Graph(graph)
+        self.resource = resource if resource is not None else {}
         self.create_app(name)
 
     def flow_mixin(self, path):
         param = request.json
-        result = self.graph[path].walk(**param).get('result', '')
+        result = self.graph[path].walk(_resource=self.resource, **param).get('result', '')
         return json.dumps(result, ensure_ascii=False)
 
     def create_app(self, name):
