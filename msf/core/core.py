@@ -116,7 +116,7 @@ class Path(object):
         return self.walk(**kwds)
 
 
-def node_register(module=None, args=None, description=None, config=None):
+def node_register(name=None, module=None, args=None, description=None, config=None):
 
     def decorator(func):
         config = {
@@ -131,7 +131,7 @@ def node_register(module=None, args=None, description=None, config=None):
             return func(*args, **kwds)
 
         node.forward = wrapper
-        _NodeList[func.__name__] = node
+        _NodeList[func.__name__ if name is None else name] = node
         return wrapper
 
     return decorator
