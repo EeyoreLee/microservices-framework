@@ -10,7 +10,8 @@ from msf import node_register
 
 @node_register()
 def test_node_via_print(**kwds):
-    resource = kwds.get('resource', {})
+    print(kwds)
+    resource = kwds.get('_resource', {})
     resource_apple = resource.get('test_rsc')
     param = kwds.get('ids', [])
     result = {

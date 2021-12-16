@@ -96,20 +96,22 @@ class Path(object):
     def __init__(self, config, nodes) -> None:
         super().__init__()
         self.config = config if isinstance(config, PathConfig) else PathConfig(config)
-        self.flow = []
+        self.flow = {}
+        self._args = config.get('args', {})
         self.nodes = []
         self.build_flow(nodes)
 
     def build_flow(self, nodes):
         flow_conf = self.config.flow
         for n in flow_conf:
-            self.flow.append(nodes[n])
+            self.flow[n] = nodes[n]
             self.nodes.append(nodes[n])
 
     def walk(self, **kwds):
         factor = None
-        for n in self.flow:
-            factor = n(factor=factor, **kwds)
+        for name, node in self.flow.items():
+            _args:dict = self._args.get(name, {})
+            factor = node(factor=factor, **_args, **kwds)
         return factor
 
     def __call__(self,**kwds):

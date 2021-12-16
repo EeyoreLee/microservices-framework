@@ -17,6 +17,11 @@ NODE_CONF = {
 PATH_CONF = {
     "test": {
         "flow": ['test_node_via_print'], 
+        "args": {
+            "test_node_via_print": {
+                "print_info": "opooooooo"
+            }
+        },
         "description": ""
     }
 }
