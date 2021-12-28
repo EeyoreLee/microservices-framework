@@ -46,7 +46,7 @@ class Node(object):
         self.config = config if isinstance(config, NodeConfig) else NodeConfig(config)
 
     def forward(self, *args, **kwds):
-        return 'response success'
+        raise NotImplementedError()
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
         return self.forward(*args, **kwds)
@@ -98,6 +98,7 @@ class Path(object):
         self.config = config if isinstance(config, PathConfig) else PathConfig(config)
         self.flow = {}
         self._args = config.get('args', {})
+        self.global_args = config.get('global_args', {})
         self.nodes = []
         self.build_flow(nodes)
 
@@ -108,10 +109,10 @@ class Path(object):
             self.nodes.append(nodes[n])
 
     def walk(self, **kwds):
-        factor = None
+        factor = {}  # TODO rename var `factor`
         for name, node in self.flow.items():
             _args:dict = self._args.get(name, {})
-            factor = node(factor=factor, **_args, **kwds)
+            factor = node(factor=factor, **_args, **self.global_args, **kwds)
         return factor
 
     def __call__(self,**kwds):

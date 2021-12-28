@@ -5,8 +5,10 @@
 '''
 import json
 
-from msf.core.core import Graph
 from flask import Flask, request
+
+from msf.core.core import Graph
+from msf.engine.utils import response_package, param_parse
 
 
 class Engine(object):
@@ -18,12 +20,14 @@ class Engine(object):
         self.create_app(name)
 
     def flow_mixin(self, path):
-        param = request.json
-        result = self.graph[path].walk(_resource=self.resource, **param).get('result', '')
+        param = param_parse(request)
+        result = self.graph[path].walk(_resource=self.resource, **param)
+        result = response_package(result)
         return json.dumps(result, ensure_ascii=False)
 
     def create_app(self, name):
         self.app = Flask(name)
+        # self.app.register_error_handler()
         self.app.route('/<path>', methods=['POST'])(self.flow_mixin)
         return self.app
 
