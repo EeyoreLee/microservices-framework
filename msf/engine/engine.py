@@ -18,11 +18,13 @@ class Engine(object):
         self.graph = graph if isinstance(graph, Graph) else Graph(graph)
         self.resource = resource if resource is not None else {}
         self.create_app(name)
+        self.param_parse = param_parse
+        self.response_package = response_package
 
     def flow_mixin(self, path):
-        param = param_parse(request)
+        param = self.param_parse(request)
         result = self.graph[path].walk(_resource=self.resource, _param=param)
-        result = response_package(result)
+        result = self.response_package(result)
         return json.dumps(result, ensure_ascii=False)
 
     def create_app(self, name):
