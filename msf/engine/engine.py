@@ -21,7 +21,7 @@ class Engine(object):
 
     def flow_mixin(self, path):
         param = param_parse(request)
-        result = self.graph[path].walk(_resource=self.resource, **param)
+        result = self.graph[path].walk(_resource=self.resource, _param=param)
         result = response_package(result)
         return json.dumps(result, ensure_ascii=False)
 

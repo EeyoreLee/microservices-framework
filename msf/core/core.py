@@ -115,7 +115,7 @@ class Path(object):
             factor = node(factor=factor, **_args, **self.global_args, **kwds)
         return factor
 
-    def __call__(self,**kwds):
+    def __call__(self, **kwds):
         return self.walk(**kwds)
 
 

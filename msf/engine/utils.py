@@ -10,7 +10,11 @@ def param_parse(request):
     form_param = {k:request.form[k] for k in form_key}
 
     json_param = request.json if request.json else {}
-    return {**form_param, **json_param}
+    if form_param and not json_param:
+        return form_param
+    elif json_param and not form_param:
+        return json_param
+    return {}
 
 
 def response_package(result):
