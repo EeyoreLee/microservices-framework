@@ -7,17 +7,16 @@ import logging
 
 
 def param_parse(request):
-    if request.want_form_data_parsed:
+    content_type = request.content_type
+    if "form-data" in content_type:
         form_key = [k for k in request.form]
         form_param = {k:request.form[k] for k in form_key}
         return form_param
-    else:
-        content_type = request.content_type
-        if content_type == "application/json":
+    elif content_type == "application/json":
             return request.json
-        else:
-            logging.warning(f"the content_type {content_type} is not currently supported, the parameters cannot be parsed")
-            return {}
+    else:
+        logging.warning(f"the content_type {content_type} is not currently supported, the parameters cannot be parsed")
+        return {}
 
 
 def response_package(result):
