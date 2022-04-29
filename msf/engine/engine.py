@@ -23,9 +23,9 @@ class Engine(object):
 
     def flow_mixin(self, path):
         param = self.param_parse(request)
-        result = self.graph[path].walk(_resource=self.resource, _param=param)
-        result = self.response_package(result)
-        return json.dumps(result, ensure_ascii=False)
+        output = self.graph[path].walk(_resource=self.resource, _param=param)
+        output = self.response_package(output)
+        return json.dumps(output, ensure_ascii=False)
 
     def create_app(self, name):
         self.app = Flask(name)

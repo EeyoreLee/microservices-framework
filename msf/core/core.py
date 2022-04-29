@@ -109,11 +109,11 @@ class Path(object):
             self.nodes.append(nodes[n])
 
     def walk(self, **kwds):
-        factor = {}  # TODO rename var `factor`
+        context = {}
         for name, node in self.flow.items():
             _args:dict = self._args.get(name, {})
-            factor = node(factor=factor, **_args, **self.global_args, **kwds)
-        return factor
+            output = node(_context=context, **_args, **self.global_args, **kwds)
+        return output
 
     def __call__(self, **kwds):
         return self.walk(**kwds)

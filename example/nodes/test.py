@@ -11,6 +11,8 @@ from msf import node_register
 @node_register()
 def test_node_via_print(**kwds):
     print(kwds)
+    context = kwds.get('_context')
+    context['test_tmp_var'] = 'test'
     resource = kwds.get('_resource', {})
     resource_apple = resource.get('test_rsc')
     param = kwds.get('ids', [])
@@ -19,3 +21,9 @@ def test_node_via_print(**kwds):
     }
     print(resource_apple.apple)
     return result
+
+
+@node_register()
+def test_context(**kwds):
+    context = kwds.get('_context')
+    print(context)
