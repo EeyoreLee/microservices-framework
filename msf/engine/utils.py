@@ -8,7 +8,7 @@ import logging
 
 def param_parse(request):
     content_type = request.content_type
-    if "form-data" in content_type:
+    if "form-data" in content_type or "application/x-www-form-urlencoded" in content_type:
         form_key = [k for k in request.form]
         form_param = {k:request.form[k] for k in form_key}
         return form_param
