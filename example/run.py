@@ -4,9 +4,8 @@
 @author: lichunyu
 '''
 
-from msf import Engine, conf
 from example.workflow_conf import NODE_CONF, PATH_CONF
-from example.nodes import *
+from msf import Engine, conf
 
 
 class ResourceTest(object):
@@ -25,3 +24,5 @@ def main():
     resource = {'test_rsc': resource_apple}
     engine = Engine(config, resource=resource)
     engine.run(host='0.0.0.0', port='41000')
+
+main()
