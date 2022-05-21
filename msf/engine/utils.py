@@ -4,6 +4,9 @@
 @author: lichunyu
 '''
 import logging
+import os
+import re
+import importlib
 
 
 def param_parse(request):
@@ -64,3 +67,20 @@ def response_package(result):
         raise Exception('non std format data')
 
     return response
+
+
+def load_register_node(dir_path, ignores=None):
+    ignore_list = ['__pycache__', '__MACOSX', '.DS_Store']
+    ignore_list = ignore_list + ignores if ignores else ignore_list
+    for root, dirs, files in os.walk(dir_path):
+        _, dirname = os.path.split(root)
+        if dirname in ignore_list:
+            continue
+        for f in (set(files) - set(ignore_list)):
+            file_path = os.path.join(root, f)
+            with open(file_path) as fd:
+                s = fd.read()
+            if re.search('node_register', s):
+                # print(file_path)
+                module_str = os.path.split(dir_path)[1] + '.' + dirname + '.' + f.split('.')[0]
+                importlib.import_module(module_str)
