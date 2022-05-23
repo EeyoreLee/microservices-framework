@@ -3,8 +3,7 @@
 @create_time: 2021/11/18 13:54:34
 @author: lichunyu
 '''
-
-from msf import node_register
+from msf.core.core import node_register
 
 
 
