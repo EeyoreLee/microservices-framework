@@ -9,11 +9,6 @@ from flask import Flask, request
 
 from msf.core.core import Graph
 from msf.engine.utils import response_package, param_parse
-from msf.engine.utils import load_register_node
-
-import sys
-target_dir = sys.path[0]
-load_register_node(target_dir)
 
 
 class Engine(object):
