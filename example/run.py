@@ -8,7 +8,7 @@ sys.path.append('.')
 
 from example.workflow_conf import NODE_CONF, PATH_CONF
 from nodes import *
-from msf import Engine, asb
+from msf import Engine
 
 
 class ResourceTest(object):
