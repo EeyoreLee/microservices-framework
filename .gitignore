@@ -1,5 +1,5 @@
-__pycache__/
 build
 dist
 msf.egg-info
 test/log/log*
+**/__pycache__
