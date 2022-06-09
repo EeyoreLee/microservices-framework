@@ -3,10 +3,12 @@
 @create_time: 2021/11/18 13:58:32
 @author: lichunyu
 '''
+import sys
+sys.path.append('.')
 
-from msf import Engine, conf
 from example.workflow_conf import NODE_CONF, PATH_CONF
-from example.nodes import *
+from nodes import *
+from msf import Engine
 
 
 class ResourceTest(object):
@@ -24,4 +26,6 @@ def main():
     resource_apple = ResourceTest()
     resource = {'test_rsc': resource_apple}
     engine = Engine(config, resource=resource)
-    engine.run(host='0.0.0.0', port='41000')
+    engine.run(host='0.0.0.0', port='42000')
+
+main()
