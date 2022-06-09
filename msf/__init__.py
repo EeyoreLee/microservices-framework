@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from .utils import _LazyModule
 
 
-__version__ = "0.1.5.6"
+__version__ = "0.2.0"
 
 
 _import_structure = {
