@@ -5,11 +5,11 @@
 '''
 import sys
 import importlib
+import importlib.util
 import os
 from itertools import chain
-
-
-ModuleType = type(sys)
+from types import ModuleType
+from importlib.machinery import ModuleSpec
 
 
 class _LazyModule(ModuleType):
