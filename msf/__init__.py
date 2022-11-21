@@ -22,6 +22,9 @@ _import_structure = {
     ],
     "utils.import_utils": [
         "load_register_node"
+    ],
+    "utils.logging_utils": [
+        "logger_setup"
     ]
 }
 
@@ -30,6 +33,7 @@ if TYPE_CHECKING:
     from .engine import Engine, get_app
     from .core import Graph, node_register
     from .utils.import_utils import load_register_node
+    from .utils.logging_utils import logger_setup
 else:
     import sys
 

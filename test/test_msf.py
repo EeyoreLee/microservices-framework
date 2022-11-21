@@ -7,16 +7,12 @@ import os
 import sys
 sys.path.append(".")
 sys.path.append("./msf")
-import logging
 import json
 
 import pytest
 from requests import Response
 
 from example.app import create_app
-
-
-logger = logging.getLogger()
 
 
 @pytest.fixture()

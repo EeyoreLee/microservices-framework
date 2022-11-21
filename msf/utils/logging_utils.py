@@ -39,9 +39,9 @@ _logconfig_dict_default = {
     },
     "loggers": {
         "msf": {
-            "level": "INFO",
-            "handlers": ["timed_rotating_file_handler", "console"],
-            "propagate": False,
+            "level": "DEBUG",
+            "handlers": ["console"],
+            "propagate": True,
             "qualname": "msf"
         }
     }
@@ -61,3 +61,7 @@ def logger_setup(logconfig_dict):
             TypeError
     ) as exc:
         raise RuntimeError(str(exc))
+
+
+dictConfig(_logconfig_dict_default)
+logger = logging.getLogger("msf")
