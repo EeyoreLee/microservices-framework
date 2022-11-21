@@ -12,7 +12,7 @@ _logconfig_dict_default = {
     "incremental": False,
     "disable_existing_loggers": False,
     "root": {
-        "level": "DEBUG",
+        "level": "INFO",
         "handlers": ["console"]
     },
     "formatters": {
@@ -38,15 +38,26 @@ _logconfig_dict_default = {
         },
     },
     "loggers": {
-        "generic": {
+        "msf": {
             "level": "INFO",
             "handlers": ["timed_rotating_file_handler", "console"],
             "propagate": False,
-            "qualname": "generic"
+            "qualname": "msf"
         }
     }
 }
 
 
-dictConfig(_logconfig_dict_default)
-logger = logging.getLogger()
+
+def logger_setup(logconfig_dict):
+    config = _logconfig_dict_default.copy()
+    config.update(logconfig_dict)
+    try:
+        dictConfig(config)
+    except (
+            AttributeError,
+            ImportError,
+            ValueError,
+            TypeError
+    ) as exc:
+        raise RuntimeError(str(exc))
