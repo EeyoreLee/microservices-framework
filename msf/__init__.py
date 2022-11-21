@@ -12,20 +12,24 @@ __version__ = "0.2.0"
 
 
 _import_structure = {
-    "engine.engine": [
+    "engine": [
         "Engine",
         "get_app"
     ],
-    "core.core": [
+    "core": [
         "Graph",
         "node_register"
+    ],
+    "utils.import_utils": [
+        "load_register_node"
     ]
 }
 
 
 if TYPE_CHECKING:
-    from .engine.engine import Engine, get_app
-    from .core.core import Graph, node_register
+    from .engine import Engine, get_app
+    from .core import Graph, node_register
+    from .utils.import_utils import load_register_node
 else:
     import sys
 

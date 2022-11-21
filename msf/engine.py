@@ -7,9 +7,9 @@ import json
 
 from flask import Flask, request
 
-from msf.core.core import Graph
-from msf.engine.utils import response_package, param_parse
-from engine.generic import NodeInput
+from .core import Graph, NodeInput
+from .handlers import response_package, param_parse
+from .utils.import_utils import logger
 
 
 class Engine(object):
