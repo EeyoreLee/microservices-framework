@@ -45,11 +45,11 @@ class Node(object):
         super().__init__()
         self.config = config if isinstance(config, NodeConfig) else NodeConfig(config)
 
-    def forward(self, *args, **kwds):
+    def forward(self, node_input):
         raise NotImplementedError()
 
-    def __call__(self, *args: Any, **kwds: Any) -> Any:
-        return self.forward(*args, **kwds)
+    def __call__(self, node_input) -> Any:
+        return self.forward(node_input)
 
     # @classmethod
     # def node_register(cls, config):
@@ -108,15 +108,16 @@ class Path(object):
             self.flow[n] = nodes[n]
             self.nodes.append(nodes[n])
 
-    def walk(self, **kwds):
+    def walk(self, node_input):
         context = {}
         for name, node in self.flow.items():
             _args:dict = self._args.get(name, {})
-            output = node(_context=context, **_args, **self.global_args, **kwds)
+            output = node(node_input)
+            # output = node(_context=context, **_args, **self.global_args, **kwds)
         return output
 
-    def __call__(self, **kwds):
-        return self.walk(**kwds)
+    def __call__(self, node_input):
+        return self.walk(node_input)
 
 
 def node_register(name=None, module=None, args=None, description=None, config=None):
@@ -130,8 +131,8 @@ def node_register(name=None, module=None, args=None, description=None, config=No
         node = Node(config)
 
         @wraps(func)
-        def wrapper(*args, **kwds):
-            return func(*args, **kwds)
+        def wrapper(*_args, **kwds):
+            return func(*_args, **kwds)
 
         node.forward = wrapper
         _NodeList[func.__name__ if name is None else name] = node

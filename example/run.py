@@ -7,7 +7,7 @@ import sys
 sys.path.append('.')
 
 from example.workflow_conf import NODE_CONF, PATH_CONF
-from nodes import *
+from .nodes import *
 from msf import Engine
 
 
@@ -26,6 +26,10 @@ def main():
     resource_apple = ResourceTest()
     resource = {'test_rsc': resource_apple}
     engine = Engine(config, resource=resource)
-    engine.run(host='0.0.0.0', port='42000')
+    # engine.run(host='0.0.0.0', port='42000')
+    return engine.get_app()
 
-main()
+
+if __name__ == "__main__":
+    app = main()
+    app.run()
