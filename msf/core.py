@@ -5,21 +5,30 @@
 '''
 from functools import wraps
 from typing import Any
+from dataclasses import dataclass, field
+
 
 _NodeList = {}
+
+
+@dataclass
+class NodeInput:  # XXX rename it
+
+    context: dict = field(default_factory=dict, metadata={"help": "context"})
+    param: dict = field(default_factory=dict, metadata={"help": "body from request"})
+    resource: dict = field(default_factory=dict, metadata={
+        "help": "Store resources that need to be loaded but do not want to be loaded temporarily with the request"
+    })
+    args: dict = field(default_factory=dict, metadata={"help": "args from path config"})
 
 
 class GraphConfig(object):
 
     def __init__(self, config:dict) -> None:
-        """创建图配置
-
-        :param config: 包含NODE_CONF和PATH_CONF
-        :type config: dict
-        """        
         super().__init__()
-        self.node_conf: dict = config.get('NODE_CONF', {}) if isinstance(config, dict) else {}
-        self.path_conf: dict = config.get('PATH_CONF', {}) if isinstance(config, dict) else {}
+        # self.node_conf: dict = config.get('NODE_CONF', {}) if isinstance(config, dict) else {}  # XXX Creating nodes via configuration is temporarily deprecated
+        # self.path_conf: dict = config.get('PATH_CONF', {}) if isinstance(config, dict) else {}
+        self.path_conf = config
 
 
 class NodeConfig(object):
@@ -45,11 +54,11 @@ class Node(object):
         super().__init__()
         self.config = config if isinstance(config, NodeConfig) else NodeConfig(config)
 
-    def forward(self, *args, **kwds):
+    def forward(self, node_input):
         raise NotImplementedError()
 
-    def __call__(self, *args: Any, **kwds: Any) -> Any:
-        return self.forward(*args, **kwds)
+    def __call__(self, node_input) -> Any:
+        return self.forward(node_input)
 
     # @classmethod
     # def node_register(cls, config):
@@ -71,11 +80,12 @@ class Graph(object):
         self.build_path()
 
     def build_node(self):
-        node_conf = self.config.node_conf
+        # node_conf = self.config.node_conf  # XXX Creating nodes via configuration is temporarily deprecated
+        node_conf = {}
         nodes = {}
         for k, v in node_conf.items():
             if k in _NodeList:
-                raise Exception('CONF声明的节点已被注册')
+                raise Exception("Node has been registered")
             nodes[k] = Node(v)
         nodes.update(_NodeList)
         self.nodes = nodes
@@ -108,15 +118,14 @@ class Path(object):
             self.flow[n] = nodes[n]
             self.nodes.append(nodes[n])
 
-    def walk(self, **kwds):
-        context = {}
+    def walk(self, node_input):
         for name, node in self.flow.items():
-            _args:dict = self._args.get(name, {})
-            output = node(_context=context, **_args, **self.global_args, **kwds)
+            node_input.args: dict = self._args.get(name, {})
+            output = node(node_input)
         return output
 
-    def __call__(self, **kwds):
-        return self.walk(**kwds)
+    def __call__(self, node_input):
+        return self.walk(node_input)
 
 
 def node_register(name=None, module=None, args=None, description=None, config=None):
@@ -130,8 +139,8 @@ def node_register(name=None, module=None, args=None, description=None, config=No
         node = Node(config)
 
         @wraps(func)
-        def wrapper(*args, **kwds):
-            return func(*args, **kwds)
+        def wrapper(*_args, **kwds):
+            return func(*_args, **kwds)
 
         node.forward = wrapper
         _NodeList[func.__name__ if name is None else name] = node
