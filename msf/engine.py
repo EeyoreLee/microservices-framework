@@ -7,8 +7,9 @@ import json
 
 from flask import Flask, request
 
-from msf.core.core import Graph
-from msf.engine.utils import response_package, param_parse
+from .core import Graph, NodeInput
+from .handlers import response_package, param_parse
+from .utils.import_utils import logger
 
 
 class Engine(object):
@@ -23,7 +24,8 @@ class Engine(object):
 
     def flow_mixin(self, path):
         param = self.param_parse(request)
-        output = self.graph[path].walk(_resource=self.resource, _param=param)
+        node_input = NodeInput(param=param, resource=self.resource)
+        output = self.graph[path].walk(node_input)
         output = self.response_package(output)
         return json.dumps(output, ensure_ascii=False)
 
